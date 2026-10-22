@@ -4,60 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Partner Portal Team Pack</title>
-<style>
-:root{--bg:#fff;--fg:#1a1a1a;--muted:#5a5a5a;--accent:#b4532a;--card:#f6f3ef;--line:#e0dad2}
-@media (prefers-color-scheme:dark){:root{--bg:#161513;--fg:#eee;--muted:#aaa;--accent:#e58a5f;--card:#232120;--line:#3a3633}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}
-header{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 16px 0;border-bottom:1px solid var(--line)}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
-h1{font-size:18px;margin:0}
-nav{display:flex;gap:4px;overflow-x:auto}
-nav button{border:0;background:none;color:var(--muted);padding:8px 14px;cursor:pointer;font:inherit;border-bottom:3px solid transparent;white-space:nowrap}
-nav button[aria-selected=true]{color:var(--accent);border-color:var(--accent);font-weight:600}
-.docs{display:flex;gap:6px;flex-wrap:wrap;max-width:860px;margin:16px auto 0;padding:0 16px}
-.pill{border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:5px 12px;border-radius:999px;cursor:pointer;font:inherit}
-.pill[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
-a.dl{color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:5px 12px;border-radius:6px;font-size:14px}
-a.dl:hover{background:var(--accent);color:#fff}
-article{max-width:860px;margin:0 auto;padding:16px 16px 64px;overflow-wrap:anywhere}
-article a{color:var(--accent)}
-article img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:6px}
-article table{border-collapse:collapse;width:100%;margin:12px 0;display:block;overflow-x:auto}
-article th,article td{border:1px solid var(--line);padding:6px 10px;vertical-align:top;text-align:left}
-article th{background:var(--card)}
-article td p,article th p{margin:4px 0}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div id="progress"></div>
 <header>
-  <div class="top"><h1>Partner Portal Team Pack</h1><a class="dl" href="Anthropic_Partner_Portal_Team_Pack.zip" download>Download all (ZIP)</a></div>
-  <nav id="tabs" role="tablist"></nav>
+  <div class="wrap">
+    <div class="top"><div class="brand"><i>&#10035;</i>Partner Portal Team Pack</div><a class="dl" href="Anthropic_Partner_Portal_Team_Pack.zip" download>&#8681; Download ZIP</a></div>
+    <nav id="tabs" role="tablist"></nav>
+  </div>
 </header>
-<div class="docs" id="docs"></div>
-<article id="view" aria-live="polite"></article>
-<script>
-const DATA=[{"tab":"Start Here","docs":[{"title":"Partner Portal Start Here","html":"content/Partner_Portal_Start_Here.html"}]},{"tab":"Owner & Admin","docs":[{"title":"Owner and Admin Action Guide","html":"content/Owner_and_Admin_Action_Guide.html"}]},{"tab":"Sales","docs":[{"title":"Sales Team Guide","html":"content/Sales_Team_Guide.html"}]},{"tab":"Delivery","docs":[{"title":"Delivery and Technical Team Guide","html":"content/Delivery_and_Technical_Team_Guide.html"}]},{"tab":"Training & Exams","docs":[{"title":"Claude Free Exam Booking Guide","html":"content/Claude_Free_Exam_Booking_Guide.html"},{"title":"Training and Certification Guide","html":"content/Training_and_Certification_Guide.html"}]},{"tab":"Reference","docs":[{"title":"Document Index","html":"content/Document_Index.html"}]}];
-const $=id=>document.getElementById(id);
-let t=0,d=0,token=0;
-async function show(){
-  const doc=DATA[t].docs[d],my=++token;
-  $('docs').innerHTML=DATA[t].docs.length>1?DATA[t].docs.map((x,i)=>`<button class="pill" aria-pressed="${i==d}" data-d="${i}">${x.title}</button>`).join(''):'';
-  [...$('tabs').children].forEach((b,i)=>b.setAttribute('aria-selected',i==t));
-  history.replaceState(null,'','#'+t+'-'+d);
-  $('view').textContent='Loading...';
-  try{
-    const r=await fetch(doc.html);if(!r.ok)throw 0;
-    const h=await r.text();if(my!==token)return;
-    $('view').innerHTML=h;window.scrollTo(0,0);
-  }catch(e){if(my===token)$('view').textContent='Could not load this document.'}
-}
-$('tabs').innerHTML=DATA.map((s,i)=>`<button role="tab" data-t="${i}">${s.tab}</button>`).join('');
-$('tabs').onclick=e=>{if(e.target.dataset.t){t=+e.target.dataset.t;d=0;show()}};
-$('docs').onclick=e=>{if(e.target.dataset.d){d=+e.target.dataset.d;show()}};
-const m=location.hash.match(/^#(\d+)-(\d+)$/);
-if(m&&DATA[+m[1]]&&DATA[+m[1]].docs[+m[2]]){t=+m[1];d=+m[2]}
-show();
-</script>
+<div class="wrap layout">
+  <aside id="toc"></aside>
+  <main>
+    <div class="docs" id="docs"></div>
+    <details class="mtoc" id="mtoc"><summary>On this page</summary><div id="mtoclist"></div></details>
+    <article id="view" aria-live="polite"></article>
+    <div class="pager" id="pager"></div>
+  </main>
+</div>
+<footer>Claude Partner Network &middot; internal team pack</footer>
+<dialog id="lb"><img alt=""></dialog>
+<script>window.PAGE={tabs:[0,1,2,3,4,5]};</script>
+<script src="data.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
