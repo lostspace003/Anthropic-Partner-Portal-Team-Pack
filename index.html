@@ -8,54 +8,49 @@
 :root{--bg:#fff;--fg:#1a1a1a;--muted:#5a5a5a;--accent:#b4532a;--card:#f6f3ef;--line:#e0dad2}
 @media (prefers-color-scheme:dark){:root{--bg:#161513;--fg:#eee;--muted:#aaa;--accent:#e58a5f;--card:#232120;--line:#3a3633}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;height:100vh;display:flex;flex-direction:column}
-header{padding:12px 16px 0;border-bottom:1px solid var(--line)}
-h1{font-size:18px;margin:0}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}
+header{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 16px 0;border-bottom:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+h1{font-size:18px;margin:0}
 nav{display:flex;gap:4px;overflow-x:auto}
 nav button{border:0;background:none;color:var(--muted);padding:8px 14px;cursor:pointer;font:inherit;border-bottom:3px solid transparent;white-space:nowrap}
 nav button[aria-selected=true]{color:var(--accent);border-color:var(--accent);font-weight:600}
-.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line)}
-.bar .docs{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.docs{display:flex;gap:6px;flex-wrap:wrap;max-width:860px;margin:16px auto 0;padding:0 16px}
 .pill{border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:5px 12px;border-radius:999px;cursor:pointer;font:inherit}
 .pill[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
-a.dl{color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:5px 12px;border-radius:6px}
+a.dl{color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:5px 12px;border-radius:6px;font-size:14px}
 a.dl:hover{background:var(--accent);color:#fff}
-#view{flex:1;overflow:auto;background:var(--card);padding:12px;text-align:center}#view canvas{max-width:100%;height:auto;box-shadow:0 1px 6px rgba(0,0,0,.25);margin:0 auto 12px;display:block;background:#fff}
+article{max-width:860px;margin:0 auto;padding:16px 16px 64px;overflow-wrap:anywhere}
+article a{color:var(--accent)}
+article img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:6px}
+article table{border-collapse:collapse;width:100%;margin:12px 0;display:block;overflow-x:auto}
+article th,article td{border:1px solid var(--line);padding:6px 10px;vertical-align:top;text-align:left}
+article th{background:var(--card)}
+article td p,article th p{margin:4px 0}
 </style>
 </head>
 <body>
-<header><div class="top"><h1>Partner Portal Team Pack</h1><a class="dl" href="Anthropic_Partner_Portal_Team_Pack.zip" download>Download all (ZIP)</a></div><nav id="tabs" role="tablist"></nav></header>
-<div class="bar"><div class="docs" id="docs"></div><span id="links"></span></div>
-<div id="view" aria-label="Document viewer"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<header>
+  <div class="top"><h1>Partner Portal Team Pack</h1><a class="dl" href="Anthropic_Partner_Portal_Team_Pack.zip" download>Download all (ZIP)</a></div>
+  <nav id="tabs" role="tablist"></nav>
+</header>
+<div class="docs" id="docs"></div>
+<article id="view" aria-live="polite"></article>
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-let token=0;
-async function render(url){
-  const my=++token,v=$("view");v.textContent="Loading...";
-  try{
-    const pdf=await pdfjsLib.getDocument(url).promise;
-    if(my!==token)return;v.textContent="";
-    const w=Math.min(v.clientWidth-24,900),dpr=window.devicePixelRatio||1;
-    for(let i=1;i<=pdf.numPages;i++){
-      const pg=await pdf.getPage(i);if(my!==token)return;
-      const s=w/pg.getViewport({scale:1}).width,vp=pg.getViewport({scale:s*dpr});
-      const c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;c.style.width=(vp.width/dpr)+"px";
-      v.appendChild(c);await pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;
-    }
-  }catch(e){if(my===token)v.textContent="Could not load this document. Use the download button."}
-}
-const DATA=[{"tab":"Start Here","docs":[{"title":"Partner Portal Start Here","pdf":"00_START_HERE/Partner_Portal_Start_Here.pdf","docx":"00_START_HERE/Partner_Portal_Start_Here.docx"}]},{"tab":"Owner & Admin","docs":[{"title":"Owner and Admin Action Guide","pdf":"01_Owner_and_Admin/Owner_and_Admin_Action_Guide.pdf","docx":"01_Owner_and_Admin/Owner_and_Admin_Action_Guide.docx"}]},{"tab":"Sales","docs":[{"title":"Sales Team Guide","pdf":"02_Sales_Team/Sales_Team_Guide.pdf","docx":"02_Sales_Team/Sales_Team_Guide.docx"}]},{"tab":"Delivery","docs":[{"title":"Delivery and Technical Team Guide","pdf":"03_Delivery_Team/Delivery_and_Technical_Team_Guide.pdf","docx":"03_Delivery_Team/Delivery_and_Technical_Team_Guide.docx"}]},{"tab":"Training & Exams","docs":[{"title":"Claude Free Exam Booking Guide","pdf":"04_Training_and_Exams/Claude_Free_Exam_Booking_Guide.pdf","docx":"04_Training_and_Exams/Claude_Free_Exam_Booking_Guide.docx"},{"title":"Training and Certification Guide","pdf":"04_Training_and_Exams/Training_and_Certification_Guide.pdf","docx":"04_Training_and_Exams/Training_and_Certification_Guide.docx"}]},{"tab":"Reference","docs":[{"title":"Document Index","pdf":"05_Reference_Library/Document_Index.pdf","docx":"05_Reference_Library/Document_Index.docx"}]}];
+const DATA=[{"tab":"Start Here","docs":[{"title":"Partner Portal Start Here","html":"content/Partner_Portal_Start_Here.html"}]},{"tab":"Owner & Admin","docs":[{"title":"Owner and Admin Action Guide","html":"content/Owner_and_Admin_Action_Guide.html"}]},{"tab":"Sales","docs":[{"title":"Sales Team Guide","html":"content/Sales_Team_Guide.html"}]},{"tab":"Delivery","docs":[{"title":"Delivery and Technical Team Guide","html":"content/Delivery_and_Technical_Team_Guide.html"}]},{"tab":"Training & Exams","docs":[{"title":"Claude Free Exam Booking Guide","html":"content/Claude_Free_Exam_Booking_Guide.html"},{"title":"Training and Certification Guide","html":"content/Training_and_Certification_Guide.html"}]},{"tab":"Reference","docs":[{"title":"Document Index","html":"content/Document_Index.html"}]}];
 const $=id=>document.getElementById(id);
-let t=0,d=0;
-function show(){
-  const doc=DATA[t].docs[d];
-  render(doc.pdf);$("view").scrollTop=0;
-  $('links').innerHTML=`<a class="dl" href="${doc.pdf}" download>Download PDF</a> `+
-    (doc.docx?`<a class="dl" href="${doc.docx}" download>Download Word</a> `:'');
-  $('docs').innerHTML=DATA[t].docs.length>1?DATA[t].docs.map((x,i)=>`<button class="pill" aria-pressed="${i==d}" data-d="${i}">${x.title}</button>`).join(''):`<strong>${doc.title}</strong>`;
+let t=0,d=0,token=0;
+async function show(){
+  const doc=DATA[t].docs[d],my=++token;
+  $('docs').innerHTML=DATA[t].docs.length>1?DATA[t].docs.map((x,i)=>`<button class="pill" aria-pressed="${i==d}" data-d="${i}">${x.title}</button>`).join(''):'';
   [...$('tabs').children].forEach((b,i)=>b.setAttribute('aria-selected',i==t));
   history.replaceState(null,'','#'+t+'-'+d);
+  $('view').textContent='Loading...';
+  try{
+    const r=await fetch(doc.html);if(!r.ok)throw 0;
+    const h=await r.text();if(my!==token)return;
+    $('view').innerHTML=h;window.scrollTo(0,0);
+  }catch(e){if(my===token)$('view').textContent='Could not load this document.'}
 }
 $('tabs').innerHTML=DATA.map((s,i)=>`<button role="tab" data-t="${i}">${s.tab}</button>`).join('');
 $('tabs').onclick=e=>{if(e.target.dataset.t){t=+e.target.dataset.t;d=0;show()}};
@@ -66,5 +61,3 @@ show();
 </script>
 </body>
 </html>
-
-
