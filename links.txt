@@ -1,0 +1,15 @@
+Partner Portal Team Pack - links
+
+GitHub repo: https://github.com/lostspace003/Anthropic-Partner-Portal-Team-Pack
+Site: https://lostspace003.github.io/Anthropic-Partner-Portal-Team-Pack/
+
+All documents (single PDF): https://lostspace003.github.io/Anthropic-Partner-Portal-Team-Pack/Partner_Portal_Team_Pack_All.pdf
+
+Separate PDFs:
+Start Here:   https://lostspace003.github.io/Anthropic-Partner-Portal-Team-Pack/00_START_HERE/Partner_Portal_Start_Here.pdf
+Owner/Admin:  https://lostspace003.github.io/Anthropic-Partner-Portal-Team-Pack/01_Owner_and_Admin/Owner_and_Admin_Action_Guide.pdf
+Sales:        https://lostspace003.github.io/Anthropic-Partner-Portal-Team-Pack/02_Sales_Team/Sales_Team_Guide.pdf
+Delivery:     https://lostspace003.github.io/Anthropic-Partner-Portal-Team-Pack/03_Delivery_Team/Delivery_and_Technical_Team_Guide.pdf
+Exam Booking: https://lostspace003.github.io/Anthropic-Partner-Portal-Team-Pack/04_Training_and_Exams/Claude_Free_Exam_Booking_Guide.pdf
+Training:     https://lostspace003.github.io/Anthropic-Partner-Portal-Team-Pack/04_Training_and_Exams/Training_and_Certification_Guide.pdf
+Index:        https://lostspace003.github.io/Anthropic-Partner-Portal-Team-Pack/05_Reference_Library/Document_Index.pdf
