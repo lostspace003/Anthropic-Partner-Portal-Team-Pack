@@ -52,8 +52,7 @@ function show(){
   const doc=DATA[t].docs[d];
   render(doc.pdf);$("view").scrollTop=0;
   $('links').innerHTML=`<a class="dl" href="${doc.pdf}" download>Download PDF</a> `+
-    (doc.docx?`<a class="dl" href="${doc.docx}" download>Download Word</a> `:'')+
-    `<a class="dl" href="${doc.pdf}" target="_blank" rel="noopener">Open full screen</a>`;
+    (doc.docx?`<a class="dl" href="${doc.docx}" download>Download Word</a> `:'');
   $('docs').innerHTML=DATA[t].docs.length>1?DATA[t].docs.map((x,i)=>`<button class="pill" aria-pressed="${i==d}" data-d="${i}">${x.title}</button>`).join(''):`<strong>${doc.title}</strong>`;
   [...$('tabs').children].forEach((b,i)=>b.setAttribute('aria-selected',i==t));
   history.replaceState(null,'','#'+t+'-'+d);
